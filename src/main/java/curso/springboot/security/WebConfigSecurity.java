@@ -36,13 +36,6 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(implementacaoUserDetailsService)
 		.passwordEncoder(new BCryptPasswordEncoder());
-		
-		/*
-		auth.inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder())
-		.withUser("felipe")
-		.password("$2a$10$tJMKVRbTDPWgr2mF6dD7LukHWsA4iwaW8q1fdLnYYo.SEQH5bI4Wy")
-		.roles("ADMIN");
-		*/
 	}
 	
 	@Override //Ignora URL específica
