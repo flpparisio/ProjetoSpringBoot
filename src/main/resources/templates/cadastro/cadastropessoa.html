@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<style type="text/css">
+	table.striped>tbody>tr:nth-child(odd) {
+		background-color: rgba(158, 154, 154, 0.5);
+	}
+</style>
+</head>
+<body>
+	<h3>Spring Boot + Thymeleaf + Material Design Lite</h3><br>
+	<h5>Cadastro de Pessoas</h5>
+	<div class="row">
+		<br>
+			<div th:each="m : ${msg}">
+				<span th:text = "${m}"/>
+			</div>
+		<br>
+		<form action="salvarpessoa" id="formpessoa" method="post" th:object="${pessoaobj}" class="col s12">
+			<div class="row" sec:authorize="hasRole('ROLE_TECNICO')">
+				<div class="input-field col s6">
+					<label for="id" class="active">ID</label> 
+					<input name="id" th:field="*{id}" id="id" readonly="readonly">
+				</div>
+				<div class="input-field col s6">
+					<label for="nome" class="active">Nome</label> 
+					<input type="text" name="nome" id="nome" th:field="*{nome}"/>
+				</div>
+				<div class="input-field col s6">
+					<label for="sobrenome" class="active">Sobrenome</label>
+					<input type="text" name="sobrenome" id="sobrenome" th:field="*{sobrenome}"/> 
+				</div>
+				<div class="input-field col s6">
+					<label for="idade" class="active">Idade</label> 
+					<input type="text" name="idade" id="idade" th:field="*{idade}"/> 
+				</div>
+			</div>
+			<input type="submit" value="Salvar" class="waves-effect waves-light btn"/>
+			<button onclick="document.getElementById('formpessoa').reset()" class="waves-effect waves-light btn">Novo</button>
+		</form>
+	</div>
+	
+	<form action="pesquisarpessoa" method="post">
+		<label>Pesquisar por Nome:</label>
+		<input name="nomepesquisa">
+		<input type="submit" value="Buscar" class="waves-effect waves-light btn">
+		<a href="/listapessoas" class="waves-effect waves-light btn">Listar Pessoas</a>
+	</form>
+	
+	<table class="striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nome</th>
+				<th>Sobrenome</th>
+				<th>Idade</th>
+				<th>Editar</th>
+				<th>Excluir</th>
+			</tr>
+		</thead>
+		<tr th:each="pessoa : ${pessoas}">
+			<td th:text="${pessoa.id}"></td>
+			<td><a th:href="@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}"><span th:text="${pessoa.nome}"></span></a></td>
+			<td th:text="${pessoa.sobrenome}"></td>
+			<td th:text="${pessoa.idade}"></td>
+			<td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a></td>
+			<td><a th:href="@{/excluirpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Excluir</a></td>
+		</tr>
+	</table>
+
+</body>
+</html>
